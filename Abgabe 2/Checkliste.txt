@@ -1,0 +1,161 @@
+Checkliste für Aufgabe 1 – Two-dimensional data with bottleneck
+================================================================
+
+[ ] 1. Benötigte Bibliotheken importieren
+    - torch
+    - numpy
+    - matplotlib
+    - sklearn.datasets.make_moons
+    - sklearn.model_selection.train_test_split
+    - sklearn.mixture.GaussianMixture
+
+[ ] 2. Reproduzierbarkeit vorbereiten
+    - Zufalls-Seeds für NumPy, PyTorch und make_moons() festlegen.
+
+[ ] 3. Two-Moons-Daten erzeugen
+    - Zweidimensionale Daten mit make_moons() erzeugen.
+    - Zunächst etwa 1.000 Trainingspunkte verwenden.
+    - noise=0.1 setzen.
+    - Daten in Trainings- und Testdaten aufteilen.
+
+[ ] 4. Daten in PyTorch-Tensoren umwandeln
+    - Merkmale als torch.float32 speichern.
+    - Labels für spätere Visualisierungen aufbewahren.
+
+[ ] 5. Mini-Batch-Verarbeitung erstellen
+    - TensorDataset verwenden.
+    - DataLoader mit einstellbarer Batchgröße erstellen.
+
+[ ] 6. Autoencoder-Klasse implementieren
+    - Konstruktor mit vier Argumenten erstellen:
+      input_size, bottleneck_size, hidden_size, layers.
+    - Für Aufgabe 1 input_size=2 verwenden.
+    - Für Aufgabe 1 bottleneck_size=1 verwenden.
+
+[ ] 7. Encoder aufbauen
+    - Eingabe von input_size auf hidden_size abbilden.
+    - Die gewünschte Anzahl versteckter Schichten einbauen.
+    - Nach jeder inneren linearen Schicht ReLU verwenden.
+    - Letzte Encoder-Schicht linear auf bottleneck_size abbilden.
+    - Nach der Bottleneck-Schicht keine ReLU verwenden.
+
+[ ] 8. Decoder spiegelbildlich aufbauen
+    - Vom Bottleneck über die versteckten Schichten zurück auf input_size abbilden.
+    - In den inneren Schichten ReLU verwenden.
+    - Für die letzte Ausgabeschicht nur eine lineare Schicht verwenden.
+
+[ ] 9. encode(), decode() und forward() implementieren
+    - encode() gibt den Bottleneck-Code zurück.
+    - decode() rekonstruiert Daten aus einem Code.
+    - forward() führt Encoder und Decoder nacheinander aus.
+
+[ ] 10. Funktion train_autoencoder() implementieren
+    - Trainingsdatensatzgröße einstellbar machen.
+    - Batchgröße einstellbar machen.
+    - Anzahl der Epochen einstellbar machen.
+    - Lernrate oder Lernratenplan einstellbar machen.
+    - hidden_size und layers einfach variierbar machen.
+
+[ ] 11. Loss und Optimizer konfigurieren
+    - torch.nn.MSELoss() als Rekonstruktionsfehler verwenden.
+    - torch.optim.Adam mit Standard-Lernrate 0.001 verwenden.
+    - Pro Batch: Gradienten löschen, Vorwärtsdurchlauf, Loss berechnen,
+      Backpropagation ausführen und Parameter aktualisieren.
+
+[ ] 12. Trainings- und Testfehler messen
+    - Durchschnittlichen Trainingsfehler pro Epoche speichern.
+    - Testfehler pro Epoche oder am Trainingsende speichern.
+    - Testauswertung mit model.eval() und torch.no_grad() durchführen.
+
+[ ] 13. Kleine Testkonfiguration ausführen
+    - Etwa 1.000 Trainingspunkte verwenden.
+    - Zunächst 10 Epochen verwenden.
+    - Zunächst 2 versteckte Schichten verwenden.
+    - Bottleneck-Größe 1 verwenden.
+    - Lernrate 0.001 verwenden.
+    - Prüfen, ob der Loss sinkt.
+
+[ ] 14. Hyperparameter systematisch untersuchen
+    - Trainingsdatensatzgröße variieren.
+    - Batchgröße variieren.
+    - Anzahl der Epochen variieren.
+    - Lernrate beziehungsweise Lernratenplan variieren.
+    - hidden_size variieren.
+    - Anzahl der versteckten Schichten variieren.
+    - Möglichst immer nur einen Parameter gleichzeitig verändern.
+    - Test-Rekonstruktionsfehler jeder Konfiguration speichern.
+
+[ ] 15. Hyperparameter-Ergebnisse visualisieren
+    - Testfehler gegen Lernrate darstellen.
+    - Testfehler gegen Anzahl der Epochen darstellen.
+    - Testfehler gegen Batchgröße darstellen.
+    - Testfehler gegen hidden_size darstellen.
+    - Testfehler gegen Anzahl der Schichten darstellen.
+    - Alle Diagramme mit Titel, Achsenbeschriftungen und Legende versehen.
+
+[ ] 16. Ausgewählte Rekonstruktionen darstellen
+    - Originale Testpunkte und Rekonstruktionen gemeinsam darstellen.
+    - Mindestens eine schwache Konfiguration zeigen.
+    - Die beste gefundene Konfiguration zeigen.
+
+[ ] 17. Beste Hyperparameter bestimmen
+    - Testfehler und visuelle Qualität berücksichtigen.
+    - Gewählte Hyperparameter im Notebook dokumentieren.
+
+[ ] 18. Schwankungen zwischen Trainingsläufen untersuchen
+    - Beste Konfiguration mehrfach mit demselben Datensatz trainieren.
+    - Dabei unterschiedliche Modell-Seeds verwenden.
+    - Beste Konfiguration mit unterschiedlichen neu erzeugten Datensätzen trainieren.
+    - Rekonstruktionsfehler und rekonstruierte Geometrie vergleichen.
+    - Wenn sinnvoll Mittelwert und Standardabweichung angeben.
+
+[ ] 19. Code-Verteilung berechnen
+    - Daten mit model.encode() in den eindimensionalen Bottleneck abbilden.
+    - Codewerte für die weitere Auswertung speichern.
+
+[ ] 20. Histogramm der Code-Verteilung erstellen
+    - Beschriftetes Histogramm der Codewerte zeichnen.
+    - Form der Verteilung beschreiben.
+
+[ ] 21. Gaussian Mixture Model anpassen
+    - GaussianMixture auf die eindimensionalen Codes fitten.
+    - Gegebenenfalls unterschiedliche Komponentenzahlen untersuchen.
+
+[ ] 22. Synthetische Daten erzeugen
+    - Neue Codes aus dem angepassten GMM ziehen.
+    - Codes mit model.decode() in Datenpunkte umwandeln.
+    - Synthetische und echte Two-Moons-Daten visualisieren und vergleichen.
+    - Qualität der synthetischen Daten kommentieren.
+
+[ ] 23. Ohne erneutes Training auf noise=0.2 testen
+    - Neuen Testdatensatz mit noise=0.2 erzeugen.
+    - Das bei noise=0.1 trainierte Modell unverändert verwenden.
+    - Rekonstruktionsfehler messen.
+    - Originale und rekonstruierte Punkte visualisieren.
+
+[ ] 24. Neues Modell mit noise=0.2 trainieren
+    - Trainingsdatensatz mit noise=0.2 erzeugen.
+    - Einen neuen Autoencoder darauf trainieren.
+
+[ ] 25. Geometrien vergleichen
+    - Training 0.1 / Test 0.1 vergleichen.
+    - Training 0.1 / Test 0.2 vergleichen.
+    - Training 0.2 / Test 0.2 vergleichen.
+    - Änderungen der rekonstruierten Geometrie kommentieren.
+
+[ ] 26. Schriftliche Interpretation ergänzen
+    - Beschreiben, was in jedem Experiment verändert wurde.
+    - Ergebnisse der Grafiken erklären.
+    - Veränderungen des Testfehlers kommentieren.
+    - Mögliche Ursachen diskutieren.
+    - Beste Konfiguration begründen.
+    - Qualität der synthetischen Daten bewerten.
+
+[ ] 27. Notebook abschließend prüfen und exportieren
+    - Kernel neu starten.
+    - Alle Zellen von oben nach unten ausführen.
+    - Auf Fehlermeldungen prüfen.
+    - Alle Diagramme vollständig beschriften.
+    - Ergebnisse und Kommentare speichern.
+    - Notebook als autoencoders.html exportieren.
+
